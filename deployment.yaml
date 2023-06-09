@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dash
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dash
+  template:
+    metadata:
+      labels:
+        app: dash
+    spec:
+      containers:
+      - name: dash
+        image: lilalian/dash_test
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dash-np-service
+spec:
+  selector:
+    app: dash
+  type: NodePort
+  ports:
+  - port: 8000
+    targetPort: 8000
+#   nodePort: 8000
+
+
